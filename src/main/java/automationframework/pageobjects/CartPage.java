@@ -1,0 +1,42 @@
+package automationframework.pageobjects;
+
+import java.util.List;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+import automationframework.AbstractComponents.AbstractComponent;
+
+public class CartPage extends AbstractComponent{
+
+	WebDriver driver;
+	
+	@FindBy(xpath="//*[@class='cartSection']/h3")
+	private List<WebElement> cartProducts;
+	
+	@FindBy(xpath="//*[@class='totalRow']/button")
+	WebElement checkoutEle;
+	
+	
+	public CartPage(WebDriver driver)
+	{
+		super(driver);
+		this.driver=driver;
+		PageFactory.initElements(driver, this);
+	}
+	public boolean VerifyProductDisplay(String productName)
+	{
+		boolean match=cartProducts.stream().anyMatch(cartprod->cartprod.getText().equalsIgnoreCase(productName));
+		return match;
+	}
+	public CheckoutPage goToCheckout()
+	{
+		checkoutEle.click();
+		return new CheckoutPage(driver);
+	
+	}
+	
+	
+}
